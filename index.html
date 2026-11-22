@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko H&R | Koleksi Hijab & Fashion Muslimah Pilihan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        cream: {
+                            50: '#FDFBF7',
+                            100: '#F7F2EA',
+                            200: '#EFE5D5',
+                        },
+                        rosebrand: {
+                            50: '#FDF6F5',
+                            100: '#F9E8E6',
+                            200: '#F2CFCB',
+                            500: '#C87D75',
+                            600: '#B0655D',
+                            700: '#8E4E47',
+                        },
+                        charcoal: {
+                            800: '#2D2A29',
+                            900: '#1F1D1C',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cream-50 text-charcoal-800 font-sans antialiased selection:bg-rosebrand-200 selection:text-charcoal-900">
+
+    <!-- ===================================================================== -->
+    <!-- NAVBAR / HEADER                                                       -->
+    <!-- ===================================================================== -->
+    <header class="sticky top-0 z-40 bg-cream-50/95 backdrop-blur-md border-b border-cream-200 transition-all">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-rosebrand-600 text-white flex items-center justify-center font-serif font-bold text-lg sm:text-xl shadow-sm group-hover:bg-rosebrand-700 transition">
+                    H&R
+                </div>
+                <div>
+                    <h1 class="font-serif font-bold text-lg sm:text-xl text-charcoal-900 leading-tight">Toko H&R</h1>
+                    <p class="text-[11px] sm:text-xs text-stone-500 hidden sm:block">Hijab & Fashion Muslimah</p>
+                </div>
+            </a>
+
+            <!-- Navigasi Desktop -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-stone-600">
+                <a href="#katalog" class="hover:text-rosebrand-600 transition">Katalog Produk</a>
+                <a href="#keunggulan" class="hover:text-rosebrand-600 transition">Keunggulan Kami</a>
+                <a href="#cara-pesan" class="hover:text-rosebrand-600 transition">Cara Pemesanan</a>
+            </nav>
+
+            <!-- Action Buttons: Mode Edit Foto & Keranjang -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Tombol Toggle Mode Edit Foto untuk Pemilik Toko -->
+                <button id="toggleEditPhotoBtn" onclick="togglePhotoEditMode()" 
+                    class="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs sm:text-sm font-medium border border-rosebrand-200 bg-rosebrand-50 text-rosebrand-700 hover:bg-rosebrand-100 transition"
+                    title="Aktifkan mode untuk pasang/uji foto produk dari HP/Laptop Anda">
+                    <i class="fa-solid fa-camera-rotate"></i>
+                    <span class="hidden sm:inline">Mode Edit Foto</span>
+                    <span class="sm:hidden">Edit Foto</span>
+                </button>
+
+                <!-- Tombol Keranjang Belanja -->
+                <button onclick="openCart()" 
+                    class="relative flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-charcoal-900 text-white text-xs sm:text-sm font-semibold hover:bg-charcoal-800 shadow-sm transition">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="hidden sm:inline">Keranjang</span>
+                    <span id="cartBadge" class="bg-rosebrand-500 text-white text-[11px] font-bold px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Info Mode Edit Foto (Muncul saat Mode Edit Foto aktif) -->
+    <div id="editModeBanner" class="hidden bg-amber-50 border-b border-amber-200 px-4 py-3 text-center text-xs sm:text-sm text-amber-900">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2">
+            <span><i class="fa-solid fa-circle-info text-amber-600 mr-1"></i> <strong>Mode Edit Foto Aktif:</strong> Klik tombol <em>"Ganti Foto"</em> pada setiap kartu produk untuk mencoba memasang foto dari galeri HP/Laptop Anda.</span>
+            <button onclick="resetAllPhotos()" class="underline font-semibold text-amber-800 hover:text-amber-950 ml-2">Reset ke Default</button>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- HERO SECTION                                                          -->
+    <!-- ===================================================================== -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-cream-100 to-cream-50 pt-10 pb-14 sm:pt-16 sm:pb-20 border-b border-cream-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rosebrand-100 text-rosebrand-700 text-xs font-semibold tracking-wide uppercase mb-5">
+                <i class="fa-solid fa-sparkles"></i> Koleksi Terbaru & Best Seller
+            </span>
+            <h2 class="font-serif font-bold text-3xl sm:text-5xl text-charcoal-900 max-w-3xl mx-auto leading-tight mb-4">
+                Tampil Anggun & Nyaman Setiap Hari Bersama <span class="text-rosebrand-600 italic">Toko H&R</span>
+            </h2>
+            <p class="text-stone-600 text-sm sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+                Koleksi Hijab & Fashion Muslimah Pilihan — Nyaman, Anggun, Terjangkau. Pilih model favoritmu dan pesan praktis langsung melalui WhatsApp.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                <a href="#katalog" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-rosebrand-600 text-white font-semibold text-sm sm:text-base hover:bg-rosebrand-700 shadow-md shadow-rosebrand-500/20 transition flex items-center justify-center gap-2">
+                    <span>Lihat Katalog Hijab</span>
+                    <i class="fa-solid fa-arrow-down text-xs"></i>
+                </a>
+                <a href="https://wa.me/62895393394548?text=Halo%20Admin%20Toko%20H%26R,%20saya%20ingin%20tanya-tanya%20koleksi%20hijabnya%20kak" target="_blank" rel="noopener noreferrer"
+                    class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-charcoal-800 border border-stone-300 font-semibold text-sm sm:text-base hover:border-emerald-600 hover:text-emerald-700 transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-lg"></i>
+                    <span>Chat Admin WA</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- KATALOG PRODUK SECTION                                                -->
+    <!-- ===================================================================== -->
+    <section id="katalog" class="py-12 sm:py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4">
+            <div>
+                <h3 class="font-serif font-bold text-2xl sm:text-3xl text-charcoal-900">Katalog Pilihan Toko H&R</h3>
+                <p class="text-stone-500 text-sm mt-1">Pilih varian jumlah & warna favorit Anda, lalu masukkan ke keranjang atau pesan cepat via WhatsApp.</p>
+            </div>
+            <div class="text-xs text-stone-500 bg-cream-100 px-3.5 py-2 rounded-xl border border-cream-200 self-start sm:self-auto">
+                <i class="fa-solid fa-tag text-rosebrand-600 mr-1"></i> Harga Ramah di Kantong • Kualitas Terjamin
+            </div>
+        </div>
+
+        <!-- Grid Kartu Produk -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
+            <!-- Kartu produk akan dirender oleh JavaScript agar interaktif dan mudah diedit fotonya -->
+        </div>
+
+        <!-- ===================================================================== -->
+        <!-- PANDUAN SINGKAT EDIT FOTO DI KODE HTML (UNTUK PEMILIK TOKO)           -->
+        <!-- ===================================================================== -->
+        <!-- 
+            PANDUAN MANUAL GANTI FOTO PRODUK DI DALAM KODE:
+            Cari bagian `const productsData = [` di bagian <script> paling bawah file ini.
+            Pada masing-masing produk (id 1 sampai 4), ubah nilai `imageUrl: ""` menjadi link foto Anda, contoh:
+            imageUrl: "foto-phasmina-visco.jpg"  atau  imageUrl: "https://link-gambar-anda.com/foto1.jpg"
+        -->
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- KEUNGGULAN TOKO H&R                                                   -->
+    <!-- ===================================================================== -->
+    <section id="keunggulan" class="py-12 sm:py-16 bg-cream-100 border-y border-cream-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-xl mx-auto mb-10">
+                <h3 class="font-serif font-bold text-2xl sm:text-3xl text-charcoal-900">Mengapa Belanja di Toko H&R?</h3>
+                <p class="text-stone-600 text-sm mt-2">Kami berkomitmen memberikan pengalaman belanja hijab terbaik untuk Anda.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-rosebrand-100 text-rosebrand-600 flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-feather-pointed"></i>
+                    </div>
+                    <h4 class="font-bold text-charcoal-900 mb-1.5">Bahan Berkualitas</h4>
+                    <p class="text-xs sm:text-sm text-stone-500 leading-relaxed">Pilihan kain adem, lembut, jatuh sempurna, dan nyaman dipakai seharian.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-rosebrand-100 text-rosebrand-600 flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                    <h4 class="font-bold text-charcoal-900 mb-1.5">Harga Terjangkau</h4>
+                    <p class="text-xs sm:text-sm text-stone-500 leading-relaxed">Harga bersahabat mulai Rp 20.000-an dengan kualitas jahitan tepi yang rapi.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-rosebrand-100 text-rosebrand-600 flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <h4 class="font-bold text-charcoal-900 mb-1.5">Pengiriman Cepat</h4>
+                    <p class="text-xs sm:text-sm text-stone-500 leading-relaxed">Pesanan segera diproses dan dikemas rapi agar aman sampai di tujuan.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-cream-200 shadow-sm text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h4 class="font-bold text-charcoal-900 mb-1.5">Respon Cepat</h4>
+                    <p class="text-xs sm:text-sm text-stone-500 leading-relaxed">Konsultasi stok warna & pemesanan langsung dilayani admin via WhatsApp.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- CARA PEMESANAN                                                        -->
+    <!-- ===================================================================== -->
+    <section id="cara-pesan" class="py-12 sm:py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-charcoal-900 text-white rounded-3xl p-6 sm:p-10 shadow-lg">
+            <div class="text-center max-w-xl mx-auto mb-8">
+                <h3 class="font-serif font-bold text-2xl sm:text-3xl">Cara Mudah Memesan</h3>
+                <p class="text-stone-300 text-xs sm:text-sm mt-2">Cukup 3 langkah praktis tanpa perlu registrasi akun yang rumit.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-charcoal-800/80 p-5 rounded-2xl border border-stone-700">
+                    <span class="w-8 h-8 rounded-full bg-rosebrand-500 text-white font-bold text-sm inline-flex items-center justify-center mb-3">1</span>
+                    <h4 class="font-semibold text-base mb-1">Pilih Hijab & Catatan</h4>
+                    <p class="text-xs text-stone-300">Tentukan jumlah dan tulis pilihan warna/motif yang diinginkan pada kolom catatan.</p>
+                </div>
+                <div class="bg-charcoal-800/80 p-5 rounded-2xl border border-stone-700">
+                    <span class="w-8 h-8 rounded-full bg-rosebrand-500 text-white font-bold text-sm inline-flex items-center justify-center mb-3">2</span>
+                    <h4 class="font-semibold text-base mb-1">Cek Keranjang Belanja</h4>
+                    <p class="text-xs text-stone-300">Buka keranjang belanja, isi nama serta alamat lengkap pengiriman Anda.</p>
+                </div>
+                <div class="bg-charcoal-800/80 p-5 rounded-2xl border border-stone-700">
+                    <span class="w-8 h-8 rounded-full bg-emerald-500 text-white font-bold text-sm inline-flex items-center justify-center mb-3">3</span>
+                    <h4 class="font-semibold text-base mb-1">Kirim ke WhatsApp</h4>
+                    <p class="text-xs text-stone-300">Klik tombol Pesan via WA, format order otomatis terkirim ke Admin Toko H&R.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- FOOTER                                                                -->
+    <!-- ===================================================================== -->
+    <footer class="bg-cream-100 border-t border-cream-200 pt-10 pb-24 sm:pb-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-2.5 mb-2">
+                    <div class="w-8 h-8 rounded-full bg-rosebrand-600 text-white flex items-center justify-center font-serif font-bold text-sm">H&R</div>
+                    <span class="font-serif font-bold text-lg text-charcoal-900">Toko H&R</span>
+                </div>
+                <p class="text-xs sm:text-sm text-stone-600">Koleksi Hijab & Fashion Muslimah Pilihan — Nyaman, Anggun, Terjangkau.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center gap-3">
+                <a href="https://wa.me/62895393394548?text=Halo%20Toko%20H%26R,%20saya%20ingin%20bertanya%20mengenai%20produk%20hijab" target="_blank" rel="noopener noreferrer"
+                    class="px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm transition">
+                    <i class="fa-brands fa-whatsapp text-base"></i>
+                    <span>WhatsApp: +62 895-3933-94548</span>
+                </a>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-cream-200 text-center text-xs text-stone-500">
+            &copy; 2026 Toko H&R. Hak Cipta Dilindungi. Pemesanan Resmi via WhatsApp +62 895-3933-94548.
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- FLOATING WHATSAPP BUTTON                                              -->
+    <!-- ===================================================================== -->
+    <a href="https://wa.me/62895393394548?text=Halo%20Admin%20Toko%20H%26R,%20saya%20ingin%20order%20hijab%20kak" target="_blank" rel="noopener noreferrer"
+        class="fixed bottom-5 right-5 z-40 flex items-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-full shadow-lg shadow-emerald-600/30 transition transform hover:scale-105"
+        aria-label="Chat WhatsApp Toko H&R">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+        <span class="text-xs sm:text-sm font-semibold pr-1">Chat Toko H&R</span>
+    </a>
+
+    <!-- ===================================================================== -->
+    <!-- DRAWER / MODAL KERANJANG BELANJA                                      -->
+    <!-- ===================================================================== -->
+    <div id="cartOverlay" onclick="closeCart()" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden transition-opacity"></div>
+    
+    <aside id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- Header Keranjang -->
+        <div class="p-5 border-b border-stone-200 flex items-center justify-between bg-cream-50">
+            <div class="flex items-center gap-2.5">
+                <i class="fa-solid fa-bag-shopping text-rosebrand-600 text-lg"></i>
+                <h3 class="font-serif font-bold text-lg text-charcoal-900">Keranjang Belanja</h3>
+            </div>
+            <button onclick="closeCart()" class="w-9 h-9 rounded-full bg-white border border-stone-200 text-stone-600 hover:text-charcoal-900 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Isi Keranjang & Form Checkout -->
+        <div class="flex-1 overflow-y-auto p-5 space-y-6">
+            <!-- Daftar Item di Keranjang -->
+            <div id="cartItemsContainer" class="space-y-3">
+                <!-- Item keranjang dirender via JS -->
+            </div>
+
+            <!-- Form Data Pembeli (Muncul jika keranjang tidak kosong) -->
+            <div id="checkoutFormSection" class="hidden pt-4 border-t border-stone-200 space-y-4">
+                <h4 class="font-bold text-sm text-charcoal-900 flex items-center gap-2">
+                    <i class="fa-solid fa-address-card text-rosebrand-600"></i> Data Pemesan & Pengiriman
+                </h4>
+                <div>
+                    <label for="buyerName" class="block text-xs font-semibold text-stone-700 mb-1">Nama Lengkap *</label>
+                    <input type="text" id="buyerName" placeholder="Contoh: Siti Aminah" 
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-rosebrand-500">
+                </div>
+                <div>
+                    <label for="buyerAddress" class="block text-xs font-semibold text-stone-700 mb-1">Alamat Lengkap / Catatan Pengiriman *</label>
+                    <textarea id="buyerAddress" rows="2" placeholder="Contoh: Jl. Melati No. 12, Kec. Sukajadi, Bandung (Kirim via J&T)" 
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-rosebrand-500"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Keranjang: Total & Tombol Checkout WA -->
+        <div id="cartFooter" class="hidden p-5 border-t border-stone-200 bg-cream-50 space-y-3">
+            <div class="flex items-center justify-between text-sm">
+                <span class="text-stone-600">Total Belanja (<span id="cartTotalItems">0</span> pcs)</span>
+                <span id="cartTotalPrice" class="font-bold text-lg text-charcoal-900">Rp 0</span>
+            </div>
+            <p class="text-[11px] text-stone-500">*Ongkos kirim akan diinfokan admin saat konfirmasi di WhatsApp.</p>
+            <button onclick="checkoutWhatsApp()" 
+                class="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>Pesan Sekarang via WhatsApp</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ===================================================================== -->
+    <!-- TOAST NOTIFIKASI (PENGGANTI ALERT)                                    -->
+    <!-- ===================================================================== -->
+    <div id="toastNotification" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-charcoal-900 text-white px-4 py-2.5 rounded-full text-xs sm:text-sm font-medium shadow-lg flex items-center gap-2 opacity-0 pointer-events-none transition-opacity duration-300">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMessage">Produk ditambahkan ke keranjang</span>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT LOGIC                                                      -->
+    <!-- ===================================================================== -->
+    <script>
+        // Nomor WhatsApp Resmi Toko H&R (Format Internasional tanpa +)
+        const WHATSAPP_NUMBER = "62895393394548";
+
+        // =========================================================================
+        // DATA PRODUK TOKO H&R
+        // PANDUAN EDIT FOTO PERMANEN:
+        // Isi properti `imageUrl` di bawah ini dengan link URL foto (https://...)
+        // atau nama file gambar (contoh: "phasmina-visco.jpg") di folder yang sama.
+        // =========================================================================
+        const productsData = [
+            {
+                id: 1,
+                name: "Phasmina Visco motif",
+                price: 48000,
+                priceShort: "48k",
+                badge: "Best Seller",
+                description: "Bahan viscose lembut, adem, motif elegan mudah dibentuk.",
+                // TODO: Ganti foto produk 1 (Phasmina Visco motif - 48k) di sini:
+                imageUrl: "",
+                placeholderLabel: "Foto Produk 1 (Siap Diedit)",
+                colorHint: "Contoh: Motif Floral Cream / Dusty Pink"
+            },
+            {
+                id: 2,
+                name: "Paris Jadul warna Lengkap",
+                price: 20000,
+                priceShort: "20k",
+                badge: "Favorit Harian",
+                description: "Hijab segiempat paris klasik, tegak di dahi, tersedia banyak pilihan warna.",
+                // TODO: Ganti foto produk 2 (Paris Jadul warna Lengkap - 20k) di sini:
+                imageUrl: "",
+                placeholderLabel: "Foto Produk 2 (Siap Diedit)",
+                colorHint: "Contoh: Hitam, Milo, Navy, Putih"
+            },
+            {
+                id: 3,
+                name: "Phasmina Kaos",
+                price: 35000,
+                priceShort: "35k",
+                badge: "Anti Kusut",
+                description: "Bahan kaos rayon premium, stretch, adem, dan jatuh sempurna tanpa perlu disetrika.",
+                // TODO: Ganti foto produk 3 (Phasmina Kaos - 35k) di sini:
+                imageUrl: "",
+                placeholderLabel: "Foto Produk 3 (Siap Diedit)",
+                colorHint: "Contoh: Mocca, Charcoal, Sage"
+            },
+            {
+                id: 4,
+                name: "Khimar bandana",
+                price: 46000,
+                priceShort: "46k",
+                badge: "Praktis & Syar'i",
+                description: "Khimar instan praktis dengan aksen bandana, syar'i, nyaman untuk harian.",
+                // TODO: Ganti foto produk 4 (Khimar bandana - 46k) di sini:
+                imageUrl: "",
+                placeholderLabel: "Foto Produk 4 (Siap Diedit)",
+                colorHint: "Contoh: Maroon, Coksu, Hitam"
+            }
+        ];
+
+        // State Aplikasi
+        let cart = [];
+        let isPhotoEditMode = false;
+        // Menyimpan foto sementara yang diunggah user lewat browser (localStorage)
+        let customPhotos = JSON.parse(localStorage.getItem('toko_hr_custom_photos') || '{}');
+
+        // Format Rupiah
+        function formatRupiah(angka) {
+            return "Rp " + angka.toLocaleString("id-ID");
+        }
+
+        // Menampilkan Notifikasi Toast
+        function showToast(message) {
+            const toast = document.getElementById("toastNotification");
+            const toastMsg = document.getElementById("toastMessage");
+            toastMsg.textContent = message;
+            toast.classList.remove("opacity-0");
+            toast.classList.add("opacity-100");
+            setTimeout(() => {
+                toast.classList.remove("opacity-100");
+                toast.classList.add("opacity-0");
+            }, 2600);
+        }
+
+        // Toggle Mode Edit Foto
+        function togglePhotoEditMode() {
+            isPhotoEditMode = !isPhotoEditMode;
+            const btn = document.getElementById("toggleEditPhotoBtn");
+            const banner = document.getElementById("editModeBanner");
+
+            if (isPhotoEditMode) {
+                btn.classList.remove("bg-rosebrand-50", "text-rosebrand-700");
+                btn.classList.add("bg-amber-500", "text-white", "border-amber-600");
+                banner.classList.remove("hidden");
+                showToast("Mode Edit Foto diaktifkan!");
+            } else {
+                btn.classList.add("bg-rosebrand-50", "text-rosebrand-700");
+                btn.classList.remove("bg-amber-500", "text-white", "border-amber-600");
+                banner.classList.add("hidden");
+            }
+            renderProducts();
+        }
+
+        // Handle Upload Foto Lokal oleh Pemilik Toko
+        function handleImageUpload(event, productId) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    customPhotos[productId] = e.target.result;
+                    localStorage.setItem('toko_hr_custom_photos', JSON.stringify(customPhotos));
+                    renderProducts();
+                    showToast("Foto produk berhasil dipasang!");
+                } catch (err) {
+                    // Jika ukuran gambar terlalu besar untuk localStorage, tetap tampilkan di sesi saat ini
+                    customPhotos[productId] = e.target.result;
+                    renderProducts();
+                    showToast("Foto dipasang (ukuran besar, simpan sementara)");
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Reset Semua Foto Kustom
+        function resetAllPhotos() {
+            customPhotos = {};
+            localStorage.removeItem('toko_hr_custom_photos');
+            renderProducts();
+            showToast("Semua foto dikembalikan ke placeholder default");
+        }
+
+        // Render Kartu Produk
+        function renderProducts() {
+            const grid = document.getElementById("productGrid");
+            grid.innerHTML = "";
+
+            productsData.forEach(product => {
+                const activeImage = customPhotos[product.id] || product.imageUrl;
+
+                // Area Foto / Placeholder Estetis 4:5
+                let mediaHTML = "";
+                if (activeImage) {
+                    mediaHTML = `
+                        <img src="${activeImage}" alt="${product.name}" 
+                            onerror="this.onerror=null; this.src='https://placehold.co/400x500/F9E8E6/8E4E47?text=Foto+Produk+${product.id}';"
+                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    `;
+                } else {
+                    mediaHTML = `
+                        <div class="w-full h-full bg-gradient-to-br from-rosebrand-100 via-cream-100 to-rosebrand-200/70 flex flex-col items-center justify-center p-6 text-center select-none">
+                            <!-- Ilustrasi SVG Hijab Estetis -->
+                            <div class="w-20 h-20 rounded-full bg-white/80 backdrop-blur-xs shadow-xs flex items-center justify-center mb-3 text-rosebrand-600">
+                                <svg class="w-11 h-11" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M32 10C21 10 14 18 14 29C14 38 18 47 22 54H42C46 47 50 38 50 29C50 18 43 10 32 10Z" />
+                                    <path d="M22 28C22 21.5 26.5 17 32 17C37.5 17 42 21.5 42 28C42 34.5 37.5 39 32 39C26.5 39 22 34.5 22 28Z" />
+                                    <path d="M23 37C20 43 18 49 17 54" />
+                                    <path d="M41 37C44 43 46 49 47 54" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold text-rosebrand-700 bg-white/90 px-3 py-1 rounded-full shadow-2xs">
+                                ${product.placeholderLabel}
+                            </span>
+                            <span class="text-[11px] text-stone-500 mt-1.5">Rasio 4:5 • Siap Diisi Foto</span>
+                        </div>
+                    `;
+                }
+
+                // Tombol Upload Foto jika Mode Edit Foto Aktif
+                const editOverlayHTML = isPhotoEditMode ? `
+                    <div class="absolute inset-0 bg-charcoal-900/60 backdrop-blur-[2px] flex flex-col items-center justify-center p-4 z-20">
+                        <label class="cursor-pointer bg-white hover:bg-cream-50 text-charcoal-900 font-semibold text-xs px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2 transition transform hover:scale-105">
+                            <i class="fa-solid fa-upload text-rosebrand-600"></i>
+                            <span>Ganti Foto Produk ${product.id}</span>
+                            <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, ${product.id})">
+                        </label>
+                        <p class="text-[11px] text-white/90 text-center mt-2">Pilih foto dari HP atau Laptop</p>
+                    </div>
+                ` : "";
+
+                const card = document.createElement("div");
+                card.className = "bg-white rounded-2xl border border-cream-200 shadow-xs hover:shadow-md transition overflow-hidden flex flex-col justify-between group";
+                card.innerHTML = `
+                    <div>
+                        <!-- Frame Foto Rasio 4:5 -->
+                        <div class="relative aspect-[4/5] w-full overflow-hidden bg-cream-100">
+                            ${mediaHTML}
+                            ${editOverlayHTML}
+                            <span class="absolute top-3 left-3 z-10 bg-white/95 backdrop-blur-xs text-charcoal-900 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-2xs">
+                                ${product.badge}
+                            </span>
+                            <span class="absolute bottom-3 right-3 z-10 bg-rosebrand-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                ${product.priceShort}
+                            </span>
+                        </div>
+
+                        <!-- Detail Produk -->
+                        <div class="p-4 sm:p-5">
+                            <h4 class="font-serif font-bold text-lg text-charcoal-900 leading-snug">${product.name}</h4>
+                            <p class="text-rosebrand-600 font-bold text-base mt-1">${formatRupiah(product.price)}</p>
+                            <p class="text-xs text-stone-500 mt-2 leading-relaxed">${product.description}</p>
+                            
+                            <!-- Input Catatan Warna / Motif -->
+                            <div class="mt-3.5">
+                                <label for="note-${product.id}" class="block text-[11px] font-semibold text-stone-600 mb-1">Pilihan Warna / Motif:</label>
+                                <input type="text" id="note-${product.id}" placeholder="${product.colorHint}" 
+                                    class="w-full px-3 py-2 rounded-xl bg-cream-50 border border-stone-200 text-xs focus:outline-none focus:border-rosebrand-500">
+                            </div>
+
+                            <!-- Pemilih Jumlah (Qty) -->
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-xs font-semibold text-stone-600">Jumlah:</span>
+                                <div class="flex items-center border border-stone-200 rounded-xl bg-cream-50">
+                                    <button type="button" onclick="changeCardQty(${product.id}, -1)" class="w-8 h-8 flex items-center justify-center text-stone-600 hover:text-charcoal-900 font-bold">-</button>
+                                    <input type="number" id="qty-${product.id}" value="1" min="1" max="99" readonly 
+                                        class="w-9 text-center bg-transparent text-xs font-bold text-charcoal-900 focus:outline-none">
+                                    <button type="button" onclick="changeCardQty(${product.id}, 1)" class="w-8 h-8 flex items-center justify-center text-stone-600 hover:text-charcoal-900 font-bold">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi Produk -->
+                    <div class="p-4 sm:p-5 pt-0 space-y-2">
+                        <button onclick="addToCart(${product.id})" 
+                            class="w-full py-2.5 px-4 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-white text-xs font-semibold flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>+ Keranjang</span>
+                        </button>
+                        <button onclick="quickOrderWA(${product.id})" 
+                            class="w-full py-2.5 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 hover:border-emerald-600 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Pesan Cepat via WA</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Ubah Jumlah di Kartu Produk
+        function changeCardQty(productId, delta) {
+            const input = document.getElementById(`qty-${productId}`);
+            let val = parseInt(input.value) || 1;
+            val += delta;
+            if (val < 1) val = 1;
+            if (val > 99) val = 99;
+            input.value = val;
+        }
+
+        // Tambah ke Keranjang
+        function addToCart(productId) {
+            const product = productsData.find(p => p.id === productId);
+            const qtyInput = document.getElementById(`qty-${productId}`);
+            const noteInput = document.getElementById(`note-${productId}`);
+
+            const qty = parseInt(qtyInput.value) || 1;
+            const note = noteInput.value.trim() || "Warna/motif konfirmasi admin";
+
+            // Cek jika produk & catatan yang sama sudah ada di keranjang
+            const existingIndex = cart.findIndex(item => item.productId === productId && item.note.toLowerCase() === note.toLowerCase());
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += qty;
+            } else {
+                cart.push({
+                    uid: Date.now() + Math.random(),
+                    productId: product.id,
+                    name: product.name,
+                    price: product.price,
+                    qty: qty,
+                    note: note
+                });
+            }
+
+            // Reset input kartu
+            qtyInput.value = 1;
+            noteInput.value = "";
+
+            updateCartUI();
+            showToast(`${product.name} (${qty} pcs) masuk keranjang!`);
+        }
+
+        // Pesan Cepat Langsung ke WhatsApp untuk 1 Produk
+        function quickOrderWA(productId) {
+            const product = productsData.find(p => p.id === productId);
+            const qty = parseInt(document.getElementById(`qty-${productId}`).value) || 1;
+            const note = document.getElementById(`note-${productId}`).value.trim() || "Mohon info stok warna yang ready";
+            const subtotal = product.price * qty;
+
+            const message = 
+`Halo Admin *Toko H&R*, saya ingin memesan produk berikut:
+
+• *Produk:* ${product.name}
+• *Harga Satuan:* ${formatRupiah(product.price)}
+• *Jumlah:* ${qty} pcs
+• *Catatan Warna/Motif:* ${note}
+• *Estimasi Total:* *${formatRupiah(subtotal)}*
+
+Mohon info ketersediaan stok & total ongkirnya ya kak. Terima kasih!`;
+
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(url, "_blank", "noopener,noreferrer");
+        }
+
+        // Update Tampilan Drawer Keranjang
+        function updateCartUI() {
+            const badge = document.getElementById("cartBadge");
+            const container = document.getElementById("cartItemsContainer");
+            const formSection = document.getElementById("checkoutFormSection");
+            const footer = document.getElementById("cartFooter");
+            const totalItemsEl = document.getElementById("cartTotalItems");
+            const totalPriceEl = document.getElementById("cartTotalPrice");
+
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            badge.textContent = totalQty;
+            totalItemsEl.textContent = totalQty;
+            totalPriceEl.textContent = formatRupiah(totalPrice);
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 px-4">
+                        <div class="w-16 h-16 rounded-full bg-cream-100 text-stone-400 flex items-center justify-center mx-auto mb-3 text-2xl">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <p class="font-semibold text-charcoal-900">Keranjang belanja masih kosong</p>
+                        <p class="text-xs text-stone-500 mt-1">Yuk pilih koleksi hijab favoritmu di katalog Toko H&R!</p>
+                    </div>
+                `;
+                formSection.classList.add("hidden");
+                footer.classList.add("hidden");
+                return;
+            }
+
+            formSection.classList.remove("hidden");
+            footer.classList.remove("hidden");
+
+            container.innerHTML = "";
+            cart.forEach((item, index) => {
+                const itemEl = document.createElement("div");
+                itemEl.className = "p-3.5 rounded-2xl bg-cream-50 border border-cream-200 flex items-start justify-between gap-3";
+                itemEl.innerHTML = `
+                    <div class="flex-1">
+                        <h5 class="font-bold text-sm text-charcoal-900">${item.name}</h5>
+                        <p class="text-xs text-rosebrand-600 font-semibold mt-0.5">${formatRupiah(item.price)} x ${item.qty} = ${formatRupiah(item.price * item.qty)}</p>
+                        <p class="text-[11px] text-stone-500 mt-1 bg-white px-2.5 py-1 rounded-lg border border-stone-200 inline-block">
+                            <i class="fa-solid fa-palette text-rosebrand-500 mr-1"></i> ${item.note}
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-end gap-2">
+                        <button onclick="removeCartItem(${index})" class="text-stone-400 hover:text-red-500 text-xs p-1" title="Hapus item">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                        <div class="flex items-center border border-stone-200 rounded-lg bg-white">
+                            <button onclick="updateCartItemQty(${index}, -1)" class="w-6 h-6 text-xs font-bold text-stone-600">-</button>
+                            <span class="px-2 text-xs font-bold">${item.qty}</span>
+                            <button onclick="updateCartItemQty(${index}, 1)" class="w-6 h-6 text-xs font-bold text-stone-600">+</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemEl);
+            });
+        }
+
+        function updateCartItemQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function removeCartItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        // Buka & Tutup Drawer Keranjang
+        function openCart() {
+            document.getElementById("cartOverlay").classList.remove("hidden");
+            document.getElementById("cartDrawer").classList.remove("translate-x-full");
+        }
+
+        function closeCart() {
+            document.getElementById("cartOverlay").classList.add("hidden");
+            document.getElementById("cartDrawer").classList.add("translate-x-full");
+        }
+
+        // Checkout Seluruh Isi Keranjang ke WhatsApp
+        function checkoutWhatsApp() {
+            if (cart.length === 0) return;
+
+            const buyerName = document.getElementById("buyerName").value.trim();
+            const buyerAddress = document.getElementById("buyerAddress").value.trim();
+
+            if (!buyerName) {
+                showToast("Mohon isi Nama Lengkap Anda terlebih dahulu");
+                document.getElementById("buyerName").focus();
+                return;
+            }
+            if (!buyerAddress) {
+                showToast("Mohon isi Alamat Pengiriman Anda");
+                document.getElementById("buyerAddress").focus();
+                return;
+            }
+
+            let itemsText = "";
+            let grandTotal = 0;
+
+            cart.forEach((item, idx) => {
+                const sub = item.price * item.qty;
+                grandTotal += sub;
+                itemsText += `${idx + 1}. *${item.name}*\n   Jumlah: ${item.qty} pcs (${formatRupiah(sub)})\n   Catatan Warna/Motif: ${item.note}\n\n`;
+            });
+
+            const fullMessage = 
+`Halo Admin *Toko H&R*, saya ingin membuat pesanan berikut:
+
+*RINCIAN PESANAN:*
+${itemsText}*TOTAL BELANJA:* *${formatRupiah(grandTotal)}*
+_(Belum termasuk ongkos kirim)_
+
+*DATA PEMESAN:*
+• Nama: ${buyerName}
+• Alamat/Pengiriman: ${buyerAddress}
+
+Mohon konfirmasi ketersediaan stok & total pembayarannya ya kak. Terima kasih!`;
+
+            const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(fullMessage)}`;
+            window.open(waUrl, "_blank", "noopener,noreferrer");
+        }
+
+        // Inisialisasi Halaman
+        window.addEventListener("DOMContentLoaded", () => {
+            renderProducts();
+            updateCartUI();
+        });
+    </script>
+</body>
+</html>
